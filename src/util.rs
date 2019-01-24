@@ -10,6 +10,7 @@ or distributed except according to those terms.
 /*!
 This module just contains other random implementation stuff.
 */
+use log::error;
 use std::error::Error;
 use std::marker::PhantomData;
 
@@ -80,7 +81,6 @@ pub use self::suppress_child_output::{suppress_child_output, ChildToken};
 
 #[cfg(feature = "suppress-cargo-output")]
 mod suppress_child_output {
-    use chan;
     use crate::error::Result;
     use std::io;
     use std::process::{self, Command};
@@ -109,6 +109,7 @@ mod suppress_child_output {
         let _ = thread::spawn(move || {
             let show_stderr;
             let mut recv_done = false;
+            use chan::chan_select;
             chan_select! {
                 timeout_chan.recv() => {
                     show_stderr = true;
