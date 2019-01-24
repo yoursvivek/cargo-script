@@ -18,18 +18,18 @@ As such, `cargo-script` does two major things:
 
 2. It caches the generated and compiled packages, regenerating them only if the script or its metadata have changed.
 */
-extern crate clap;
-extern crate env_logger;
+use clap;
+use env_logger;
 #[macro_use]
 extern crate lazy_static;
 #[macro_use]
 extern crate log;
-extern crate open;
-extern crate regex;
-extern crate rustc_serialize;
-extern crate semver;
-extern crate shaman;
-extern crate toml;
+use open;
+
+use rustc_serialize;
+
+
+use toml;
 
 #[cfg(feature = "chan")]
 #[macro_use]
@@ -760,7 +760,7 @@ Generate and compile a package from the input.
 
 Why take `PackageMetadata`?  To ensure that any information we need to depend on for compilation *first* passes through `decide_action_for` *and* is less likely to not be serialised with the rest of the metadata.
 */
-fn gen_pkg_and_compile(input: &Input, action: &InputAction) -> Result<()> {
+fn gen_pkg_and_compile(input: &Input<'_>, action: &InputAction) -> Result<()> {
     let pkg_path = &action.pkg_path;
     let meta = &action.metadata;
     let old_meta = action.old_metadata.as_ref();
@@ -770,7 +770,7 @@ fn gen_pkg_and_compile(input: &Input, action: &InputAction) -> Result<()> {
 
     info!("creating pkg dir...");
     fs::create_dir_all(pkg_path)?;
-    let cleanup_dir: Defer<_, MainError> = Defer::defer(|| {
+    let cleanup_dir: Defer<'_, _, MainError> = Defer::defer(|| {
         // DO NOT try deleting ANYTHING if we're not cleaning up inside our own cache.  We *DO NOT* want to risk killing user files.
         if action.using_cache {
             info!("cleaning up cache directory {:?}", pkg_path);
@@ -1010,7 +1010,7 @@ impl PackageMetadata {
 For the given input, this constructs the package metadata and checks the cache to see what should be done.
 */
 fn decide_action_for(
-    input: &Input,
+    input: &Input<'_>,
     deps: Vec<(String, String)>,
     prelude: Vec<String>,
     debug: bool,
@@ -1371,11 +1371,11 @@ impl<'a> Input<'a> {
 
         for (i, c) in name.chars().enumerate() {
             match (i, c) {
-                (0, '0'...'9') => {
+                (0, '0'..='9') => {
                     r.push('_');
                     r.push(c);
                 }
-                (_, '0'...'9') | (_, 'a'...'z') | (_, 'A'...'Z') | (_, '_') | (_, '-') => {
+                (_, '0'..='9') | (_, 'a'..='z') | (_, 'A'..='Z') | (_, '_') | (_, '-') => {
                     r.push(c);
                 }
                 (_, _) => {
@@ -1552,7 +1552,7 @@ Tries to find the path to a package's target file.
 This will also cache this information such that `exe_path` can find it later.
 */
 fn cargo_target<P>(
-    input: &Input,
+    input: &Input<'_>,
     pkg_path: P,
     manifest: &str,
     use_bincache: bool,
@@ -1612,7 +1612,7 @@ Figures out where the output executable for the input should be by guessing.
 Depending on the configuration, this might not work.  On the other hand, this actually works (usually) prior to Cargo 0.18 (Rust 1.17).
 */
 fn cargo_target_by_guess(
-    input: &Input,
+    input: &Input<'_>,
     use_bincache: bool,
     pkg_path: &Path,
     meta: &PackageMetadata,
@@ -1646,7 +1646,7 @@ Gets the path to the package's target file by parsing the output of `cargo build
 This only works on Cargo 0.18 (Rust 1.17) and higher.
 */
 fn cargo_target_by_message(
-    input: &Input,
+    input: &Input<'_>,
     manifest: &str,
     use_bincache: bool,
     meta: &PackageMetadata,

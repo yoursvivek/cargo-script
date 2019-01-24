@@ -29,7 +29,7 @@ Represents an error in the program.
 pub enum MainError {
     Io(Blame, io::Error),
     Tag(Blame, Cow<'static, str>, Box<MainError>),
-    Other(Blame, Box<Error>),
+    Other(Blame, Box<dyn Error>),
     OtherOwned(Blame, String),
     OtherBorrowed(Blame, &'static str),
 }
@@ -74,7 +74,7 @@ impl MainError {
 }
 
 impl fmt::Display for MainError {
-    fn fmt(&self, fmt: &mut fmt::Formatter) -> StdResult<(), fmt::Error> {
+    fn fmt(&self, fmt: &mut fmt::Formatter<'_>) -> StdResult<(), fmt::Error> {
         use self::MainError::*;
         use std::fmt::Display;
         match *self {
