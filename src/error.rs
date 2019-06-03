@@ -138,9 +138,9 @@ pub trait ResultExt {
 impl<T> ResultExt for Result<T> {
     type Ok = T;
 
-    fn err_tag<S>(self, msg: S) -> Result<Self::Ok>
+    fn err_tag<S>(self, msg: S) -> Result<T>
     where
-        S: Into<Cow<'static, str>>,
+        S: Into<Cow<'static, str>> 
     {
         match self {
             Ok(v) => Ok(v),
