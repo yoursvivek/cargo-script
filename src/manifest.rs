@@ -1100,14 +1100,14 @@ fn merge_manifest(
     for (k, v) in from_t {
         match v {
             toml::Value::Table(from_t) => {
-                use std::collections::btree_map::Entry::*;
+                use toml::map::Entry;
 
                 // Merge.
                 match into_t.entry(k) {
-                    Vacant(e) => {
+                    Entry::Vacant(e) => {
                         e.insert(toml::Value::Table(from_t));
                     }
-                    Occupied(e) => {
+                    Entry::Occupied(e) => {
                         let into_t = as_table_mut(e.into_mut()).ok_or((
                             Blame::Human,
                             "cannot merge manifests: cannot merge \
