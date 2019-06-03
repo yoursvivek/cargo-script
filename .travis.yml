@@ -1,5 +1,8 @@
 language: rust
-script: rustc -vV && cargo build --verbose && cargo test --verbose
+os:
+  - linux
+  - windows
+cache: cargo
 rust:
   - 1.31.0
   - stable
