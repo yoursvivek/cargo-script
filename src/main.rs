@@ -1396,17 +1396,16 @@ impl<'a> Input<'a> {
         DepIt: IntoIterator<Item = (&'dep str, &'dep str)>,
     {
         use crate::Input::*;
-        use shaman::digest::Digest;
-        use shaman::sha1::Sha1;
+        use sha1::Sha1;
 
         let hash_deps = || {
             let mut hasher = Sha1::new();
             for dep in deps {
-                hasher.input_str("dep=");
-                hasher.input_str(dep.0);
-                hasher.input_str("=");
-                hasher.input_str(dep.1);
-                hasher.input_str(";");
+                hasher.update(b"dep=");
+                hasher.update(dep.0.as_bytes());
+                hasher.update(b"=");
+                hasher.update(dep.1.as_bytes());
+                hasher.update(b";");
             }
             hasher
         };
@@ -1416,8 +1415,8 @@ impl<'a> Input<'a> {
                 let mut hasher = Sha1::new();
 
                 // Hash the path to the script.
-                hasher.input_str(&path.to_string_lossy());
-                let mut digest = hasher.result_str();
+                hasher.update(&path.to_string_lossy().as_bytes());
+                let mut digest = hasher.digest().to_string();
                 digest.truncate(consts::ID_DIGEST_LEN_MAX);
 
                 let mut id = OsString::new();
@@ -1430,12 +1429,12 @@ impl<'a> Input<'a> {
             Expr(content, template) => {
                 let mut hasher = hash_deps();
 
-                hasher.input_str("template:");
-                hasher.input_str(template.unwrap_or(""));
-                hasher.input_str(";");
+                hasher.update(b"template:");
+                hasher.update(template.unwrap_or("").as_bytes());
+                hasher.update(b";");
 
-                hasher.input_str(&content);
-                let mut digest = hasher.result_str();
+                hasher.update(&content.as_bytes());
+                let mut digest = hasher.digest().to_string();
                 digest.truncate(consts::ID_DIGEST_LEN_MAX);
 
                 let mut id = OsString::new();
@@ -1447,11 +1446,11 @@ impl<'a> Input<'a> {
                 let mut hasher = hash_deps();
 
                 // Make sure to include the [non-]presence of the `--count` flag in the flag, since it changes the actual generated script output.
-                hasher.input_str("count:");
-                hasher.input_str(if count { "true;" } else { "false;" });
+                hasher.update(b"count:");
+                hasher.update(if count { b"true;" } else { b"false;" });
 
-                hasher.input_str(&content);
-                let mut digest = hasher.result_str();
+                hasher.update(&content.as_bytes());
+                let mut digest = hasher.digest().to_string();
                 digest.truncate(consts::ID_DIGEST_LEN_MAX);
 
                 let mut id = OsString::new();
@@ -1467,11 +1466,8 @@ impl<'a> Input<'a> {
 Shorthand for hashing a string.
 */
 fn hash_str(s: &str) -> String {
-    use shaman::digest::Digest;
-    use shaman::sha1::Sha1;
-    let mut hasher = Sha1::new();
-    hasher.input_str(s);
-    hasher.result_str()
+    use sha1::Sha1;
+    Sha1::from(s).digest().to_string()
 }
 
 enum FileOverwrite {

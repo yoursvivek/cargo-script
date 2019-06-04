@@ -63,7 +63,7 @@ dependencies = [
  "rustc-serialize 0.3.24 (registry+https://github.com/rust-lang/crates.io-index)",
  "scan-rules 0.2.0 (registry+https://github.com/rust-lang/crates.io-index)",
  "semver 0.9.0 (registry+https://github.com/rust-lang/crates.io-index)",
- "shaman 0.1.0 (registry+https://github.com/rust-lang/crates.io-index)",
+ "sha1 0.6.0 (registry+https://github.com/rust-lang/crates.io-index)",
  "tempdir 0.3.7 (registry+https://github.com/rust-lang/crates.io-index)",
  "time 0.1.42 (registry+https://github.com/rust-lang/crates.io-index)",
  "toml 0.5.1 (registry+https://github.com/rust-lang/crates.io-index)",
@@ -336,13 +336,9 @@ version = "1.0.85"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 
 [[package]]
-name = "shaman"
-version = "0.1.0"
+name = "sha1"
+version = "0.6.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-dependencies = [
- "rand 0.4.3 (registry+https://github.com/rust-lang/crates.io-index)",
- "rustc-serialize 0.3.24 (registry+https://github.com/rust-lang/crates.io-index)",
-]
 
 [[package]]
 name = "strcursor"
@@ -546,7 +542,7 @@ dependencies = [
 "checksum semver 0.9.0 (registry+https://github.com/rust-lang/crates.io-index)" = "1d7eb9ef2c18661902cc47e535f9bc51b78acd254da71d375c2f6720d9a40403"
 "checksum semver-parser 0.7.0 (registry+https://github.com/rust-lang/crates.io-index)" = "388a1df253eca08550bef6c72392cfe7c30914bf41df5269b68cbd6ff8f570a3"
 "checksum serde 1.0.85 (registry+https://github.com/rust-lang/crates.io-index)" = "534b8b91a95e0f71bca3ed5824752d558da048d4248c91af873b63bd60519752"
-"checksum shaman 0.1.0 (registry+https://github.com/rust-lang/crates.io-index)" = "3b1a48b7e97a07b8f5771159e6914d8459557f8f833a60c4bd041f03736844f5"
+"checksum sha1 0.6.0 (registry+https://github.com/rust-lang/crates.io-index)" = "2579985fda508104f7587689507983eadd6a6e84dd35d6d115361f530916fa0d"
 "checksum strcursor 0.2.5 (registry+https://github.com/rust-lang/crates.io-index)" = "a53cb721e1f6d0dbba1296e2d7770edbec9a4888fdd8f6a22fea97a0a69b465a"
 "checksum strsim 0.8.0 (registry+https://github.com/rust-lang/crates.io-index)" = "8ea5119cdb4c55b55d432abb513a0429384878c15dde60cc77b1c99de1a95a6a"
 "checksum tempdir 0.3.7 (registry+https://github.com/rust-lang/crates.io-index)" = "15f2b5fb00ccdf689e0149d1b1b3c03fead81c2b37735d812fa8bddbbf41b6d8"
