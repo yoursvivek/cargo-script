@@ -140,7 +140,7 @@ impl<T> ResultExt for Result<T> {
 
     fn err_tag<S>(self, msg: S) -> Result<T>
     where
-        S: Into<Cow<'static, str>> 
+        S: Into<Cow<'static, str>>,
     {
         match self {
             Ok(v) => Ok(v),

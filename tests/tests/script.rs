@@ -118,5 +118,6 @@ fn test_script_2018_edition() {
     assert!(out.success());
     scan!(out.stdout_output();
         ("Some(1)") => ()
-    ).unwrap()
+    )
+    .unwrap()
 }

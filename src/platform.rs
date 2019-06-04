@@ -56,8 +56,8 @@ mod inner_unix_or_windows {
 mod inner {
     pub use super::inner_unix_or_windows::current_time;
 
-    use crate::error::{Blame, MainError};
     use super::MigrationKind;
+    use crate::error::{Blame, MainError};
     use log::info;
     use std::os::unix::ffi::OsStrExt;
     use std::os::unix::fs::MetadataExt;

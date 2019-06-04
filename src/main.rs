@@ -1751,9 +1751,10 @@ fn cargo_version() -> Result<Version> {
     let m = match RE_VERSION.captures(&stdout) {
         Some(m) => m,
         None => {
-            return Err(
-                format!("could not determine cargo version: output did not match expected").into(),
-            );
+            return Err(format!(
+                "could not determine cargo version: output did not match expected"
+            )
+            .into());
         }
     };
 
