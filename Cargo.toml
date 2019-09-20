@@ -39,7 +39,7 @@ toml = "0.5.3"
 sha1 = "0.6.0"
 
 [target.'cfg(windows)'.dependencies]
-winapi = { version = "0.3.7", features = [
+winapi = { version = "0.3.8", features = [
     "combaseapi",
     "knownfolders",
     "minwindef",
