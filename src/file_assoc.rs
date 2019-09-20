@@ -87,13 +87,13 @@ fn install(amend_pathext: bool) -> Result<()> {
 
     let res = (|| -> io::Result<()> {
         let hlcr = RegKey::predef(wre::HKEY_CLASSES_ROOT);
-        let dot_crs = hlcr.create_subkey(".crs")?;
+        let (dot_crs, _) = hlcr.create_subkey(".crs")?;
         dot_crs.set_value("", &"CargoScript.Crs")?;
 
-        let cs_crs = hlcr.create_subkey("CargoScript.Crs")?;
+        let (cs_crs, _) = hlcr.create_subkey("CargoScript.Crs")?;
         cs_crs.set_value("", &"Cargo Script")?;
 
-        let sh_o_c = cs_crs.create_subkey(r#"shell\open\command"#)?;
+        let (sh_o_c, _) = cs_crs.create_subkey(r#"shell\open\command"#)?;
         sh_o_c.set_value("", &format!(r#""{}" "%1" %*"#, rcs_path))?;
         Ok(())
     })();
