@@ -93,7 +93,7 @@ fn install(amend_pathext: bool) -> Result<()> {
         let (cs_crs, _) = hlcr.create_subkey("CargoScript.Crs")?;
         cs_crs.set_value("", &"Cargo Script")?;
 
-        let sh_o_c = cs_crs.create_subkey(r#"shell\open\command"#)?;
+        let (sh_o_c, _) = cs_crs.create_subkey(r#"shell\open\command"#)?;
         sh_o_c.set_value("", &format!(r#""{}" "%1" %*"#, rcs_path))?;
         Ok(())
     })();
