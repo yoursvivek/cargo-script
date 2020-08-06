@@ -24,7 +24,7 @@ suppress-cargo-output = ["chan"]
 
 [dependencies]
 chan = { version = "0.1.23", optional = true }
-clap = "2.33.0"
+clap = "2.33.2"
 env_logger = "0.7.1"
 hoedown = "6.0.0"
 itertools = "0.8.2"
